@@ -6,6 +6,15 @@
 
 
 using namespace v8;
+/*
+<ToDo>
+  <Item priority="1st priority"> item 1</Item>
+  <Item priority="2nd priority"> item 2</Item>
+</ToDo>
+Example:
+TiXmlElement* child = doc.FirstChild( "ToDo" )->FirstChild( "Item" )->ToElement();
+std::cout << "Attribute from element: " << child->Attribute("priority") << std::endl;
+*/
 
 Handle<Value> Method(const Arguments& args) {
   v8::String::Utf8Value param1(args[0]->ToString());
@@ -16,12 +25,12 @@ Handle<Value> Method(const Arguments& args) {
 
   TiXmlDocument doc;
   doc.Parse((const char*)filedata, 0, TIXML_ENCODING_UTF8);
-  TiXmlElement* child = doc.FirstChild( "ToDo" )->FirstChild( "Item" )->ToElement();
+  TiXmlElement* child = doc.FirstChild("id")->ToElement();
 
-  std::cout << "Attribute from element: " << child->Attribute("priority") << std::endl;
+  std::cout << "element text: " << child->GetText() << std::endl;
   std::cout << "param from node: " << argStr << std::endl;
 
-  return scope.Close(String::New("world"));
+  return scope.Close(String::New(child->GetText()));
 }
 
 void init(Handle<Object> exports) {
